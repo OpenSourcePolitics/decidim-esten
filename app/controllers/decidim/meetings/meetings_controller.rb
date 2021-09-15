@@ -92,7 +92,11 @@ module Decidim
       end
 
       def meetings
-        @meetings ||= paginate(search.results.not_hidden)
+        # OSP OVERRIDES for meetings order
+        # - origin :
+        # @meetings ||= paginate(search.results.not_hidden)
+        # - override :
+        @meetings ||= paginate(search.results.order(start_time: params.dig("filter", "date")&.include?("past") ? :desc : :asc))
       end
 
       def registration
